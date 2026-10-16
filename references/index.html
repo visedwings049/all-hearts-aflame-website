@@ -100,6 +100,28 @@
   </div>
 </footer>
 
+<script>
+(function () {
+  var f = document.querySelector('.contact-form[method="POST"]');
+  if (!f) return;
+  var st = f.querySelector('.form-status'), btn = f.querySelector('button[type="submit"]');
+  f.addEventListener('submit', function (e) {
+    e.preventDefault();
+    btn.disabled = true; st.hidden = false; st.className = 'form-status'; st.textContent = 'Sending…';
+    fetch(f.action, { method: 'POST', body: new FormData(f), headers: { 'Accept': 'application/json' } })
+      .then(function (r) {
+        if (!r.ok) throw new Error();
+        f.reset(); st.classList.add('ok');
+        st.textContent = 'Thank you! Your message has been sent. Jolie will be in touch.';
+      })
+      .catch(function () {
+        st.classList.add('bad');
+        st.textContent = 'Sorry, your message could not be sent. Please try again, or email ' + (f.dataset.email || 'us') + ' directly.';
+      })
+      .then(function () { btn.disabled = false; });
+  });
+})();
+</script>
 <div class="signup" id="signup" hidden role="dialog" aria-modal="true" aria-labelledby="signupTitle"
      data-endpoint="https://list.robly.com/subscribe/popup" data-fields='{"a": "320f8fd6aee25bbad7927e4db4efb2dd", "c": "", "e": "false", "f": "9763b189dda6c952dc57ca377bf8c11d", "sub_lists[]": "593514"}' data-email-field="popup_form_field_tags[13735]"
      data-delay="5" data-hide-close="1" data-hide-signup="365"

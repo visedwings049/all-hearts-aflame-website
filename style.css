@@ -65,7 +65,11 @@ p { margin: 0 0 1.1em; }
 /* ---------- header ---------- */
 .site-header {
   position: sticky; top: 0; z-index: 50;
-  background: rgba(255, 255, 255, 0.96); backdrop-filter: blur(10px);
+  background:
+    radial-gradient(520px 200px at 88% 0%, rgba(232, 205, 120, 0.42), transparent 70%),
+    radial-gradient(460px 200px at 8% 100%, rgba(255, 140, 40, 0.16), transparent 70%),
+    rgba(255, 255, 255, 0.97);
+  backdrop-filter: blur(10px);
   border-bottom: 1px solid var(--line); transition: box-shadow .3s;
 }
 .site-header.scrolled { box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08); }
@@ -378,3 +382,8 @@ body.signup-open { overflow: hidden; }
   *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
   .reveal { opacity: 1; transform: none; }
 }
+
+.form-status { margin: 0; font-weight: 600; }
+.form-status.ok { color: #1f6b3a; }
+.form-status.bad { color: #8a1c0c; }
+.contact-form .btn[disabled] { opacity: .6; cursor: wait; }
