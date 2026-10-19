@@ -201,9 +201,10 @@ p { margin: 0 0 1.1em; }
 .book-award { display: flex; align-items: center; gap: 10px; font-family: var(--caps); font-size: .78rem; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--gold-deep); margin: 14px 0 20px; }
 .book-award svg { width: 18px; height: 27px; flex: none; }
 .book-copy h3 { margin-bottom: 8px; }
-.extra { margin: 28px 0 0; display: grid; grid-template-columns: 180px 1fr; gap: 20px; align-items: center; }
-.extra img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border: 4px solid #fff; outline: 1px solid var(--line); box-shadow: 0 12px 26px rgba(0, 0, 0, .2); }
-.extra figcaption { font-style: italic; color: var(--muted); font-size: .98rem; line-height: 1.5; }
+.extra { margin: 32px 0 0; display: block; }
+.extra a { display: block; }
+.extra img { width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; border: 4px solid #fff; outline: 1px solid var(--line); box-shadow: 0 16px 36px rgba(0, 0, 0, .22); }
+.extra figcaption { margin-top: 14px; font-style: italic; color: var(--muted); font-size: .98rem; line-height: 1.5; }
 .reviews { margin: 0 0 90px; }
 .reviews h4 { text-align: center; font-family: var(--caps); font-size: .95rem; letter-spacing: .3em; text-transform: uppercase; margin-bottom: 34px; font-weight: 600; }
 .review-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(310px, 1fr)); gap: 26px; }
