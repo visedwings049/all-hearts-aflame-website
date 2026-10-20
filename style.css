@@ -348,7 +348,7 @@ body.signup-open { overflow: hidden; }
   .speak-photo .arch { margin: 0 auto; }
   .about-photos { max-width: 460px; margin: 0 auto; }
 }
-@media (max-width: 1200px) {
+@media (max-width: 1290px) {
   .nav-row { position: relative; padding: 6px 0; }
   .brand img { height: 96px; }
   .nav-toggle { display: block; }
