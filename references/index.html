@@ -124,7 +124,7 @@
 <div class="signup" id="signup" hidden role="dialog" aria-modal="true" aria-labelledby="signupTitle"
      data-endpoint="https://list.robly.com/subscribe/popup" data-fields='{"a": "320f8fd6aee25bbad7927e4db4efb2dd", "c": "", "e": "false", "f": "9763b189dda6c952dc57ca377bf8c11d", "sub_lists[]": "593514"}' data-email-field="popup_form_field_tags[13735]"
      data-delay="5" data-hide-close="1" data-hide-signup="365"
-     data-error="We couldn’t reach the mailing list just now. Please try again in a moment, or email jolie@allheartsaflame.com.">
+     data-error="We couldn’t reach the mailing list just now. Please try again in a moment, or email jolie@allheartsaflame.com." data-sitekey="6LcYpt4SAAAAADGvJTQiNsMUl-XuCCDEGZZJwICe">
   <div class="signup-backdrop" data-close></div>
   <div class="signup-card">
     <button class="signup-x" type="button" data-close aria-label="Close">&times;</button>
@@ -137,6 +137,7 @@
         <label class="sr-only" for="signupEmail">Email address</label>
         <input id="signupEmail" type="email" placeholder="Email address" autocomplete="email" required>
         <input class="hp" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
+        <div class="signup-captcha" id="signupCaptcha" hidden><p>One quick step: please confirm you are not a robot.</p><div id="signupCaptchaBox"></div></div>
         <p class="signup-error" role="alert" hidden></p>
         <button class="btn btn-gold" type="submit">Sign Up</button>
       </form>
@@ -189,29 +190,51 @@
   var form = document.getElementById('signupForm');
   var err = box.querySelector('.signup-error');
   function showError(msg) { err.textContent = msg; err.hidden = false; }
-  form.addEventListener('submit', function (e) {
-    e.preventDefault();
-    err.hidden = true;
-    var email = document.getElementById('signupEmail').value.trim();
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) { showError('That does not appear to be a valid email address.'); return; }
-    var done = function () {
-      hideFor(Number(box.dataset.hideSignup) || 365);
-      box.querySelector('[data-state="form"]').hidden = true;
-      box.querySelector('[data-state="thanks"]').hidden = false;
-    };
-    // a bot filled the hidden field: look successful, send nothing
-    if (form.elements.website.value) { done(); return; }
+  var sitekey = box.dataset.sitekey || '', pendingEmail = '', captchaId = null;
+  function done() {
+    hideFor(Number(box.dataset.hideSignup) || 365);
+    box.querySelector('[data-state="form"]').hidden = true;
+    box.querySelector('[data-state="thanks"]').hidden = false;
+  }
+  // Robly takes the solved captcha in its hidden "c" field; with it, the signup needs no confirmation email
+  function send(email, token, btn) {
     var body = new URLSearchParams(), fields = {};
     try { fields = JSON.parse(box.dataset.fields); } catch (x) {}
-    Object.keys(fields).forEach(function (k) { body.append(k, fields[k]); });
+    Object.keys(fields).forEach(function (k) { body.append(k, k === 'c' && token ? token : fields[k]); });
     body.append(box.dataset.emailField, email);
-    var btn = form.querySelector('button[type="submit"]');
-    btn.disabled = true;
     // Robly answers without CORS headers, so the reply is unreadable (no-cors); a sent request counts as success
     fetch(box.dataset.endpoint, { method: 'POST', mode: 'no-cors', body: body })
       .then(done)
       .catch(function () { showError(box.dataset.error); })
       .then(function () { btn.disabled = false; });
+  }
+  function showCaptcha(btn) {
+    document.getElementById('signupCaptcha').hidden = false;
+    var cb = function (token) { send(pendingEmail, token, btn); };
+    if (captchaId === null) { captchaId = window.grecaptcha.render('signupCaptchaBox', { sitekey: sitekey, callback: cb }); }
+    else { window.grecaptcha.reset(captchaId); }
+  }
+  function loadCaptcha(btn) {
+    if (window.grecaptcha && window.grecaptcha.render) { showCaptcha(btn); btn.disabled = false; return; }
+    window.afaCaptchaReady = function () { showCaptcha(btn); btn.disabled = false; };
+    var sc = document.createElement('script');
+    sc.src = 'https://www.google.com/recaptcha/api.js?render=explicit&onload=afaCaptchaReady';
+    sc.async = true;
+    sc.onerror = function () { showError(box.dataset.error); btn.disabled = false; };
+    document.head.appendChild(sc);
+  }
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    err.hidden = true;
+    var email = document.getElementById('signupEmail').value.trim();
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) { showError('That does not appear to be a valid email address.'); return; }
+    // a bot filled the hidden field: look successful, send nothing
+    if (form.elements.website.value) { done(); return; }
+    var btn = form.querySelector('button[type="submit"]');
+    btn.disabled = true;
+    if (!sitekey) { send(email, '', btn); return; }
+    pendingEmail = email;
+    loadCaptcha(btn);
   });
 
   if (!hiddenNow()) setTimeout(open, (Number(box.dataset.delay) || 0) * 1000);
