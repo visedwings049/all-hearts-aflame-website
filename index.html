@@ -518,11 +518,12 @@
     // Robly answers without CORS headers, so the reply is unreadable (no-cors); a sent request counts as success
     fetch(box.dataset.endpoint, { method: 'POST', mode: 'no-cors', body: body })
       .then(done)
-      .catch(function () { showError(box.dataset.error); })
+      .catch(function () { btn.hidden = false; showError(box.dataset.error); })
       .then(function () { btn.disabled = false; });
   }
   function showCaptcha(btn) {
     document.getElementById('signupCaptcha').hidden = false;
+    btn.hidden = true;  // solving the checkbox sends the signup, so the button is not needed
     var cb = function (token) { send(pendingEmail, token, btn); };
     if (captchaId === null) { captchaId = window.grecaptcha.render('signupCaptchaBox', { sitekey: sitekey, callback: cb }); }
     else { window.grecaptcha.reset(captchaId); }
