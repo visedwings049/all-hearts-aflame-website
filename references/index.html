@@ -248,16 +248,18 @@
 
   // mobile nav
   var toggle = doc.getElementById('navToggle'), nav = doc.getElementById('nav');
-  toggle.addEventListener('click', function () {
-    var open = nav.classList.toggle('open');
-    toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
-  });
-  nav.addEventListener('click', function (e) { if (e.target.tagName === 'A') { nav.classList.remove('open'); toggle.setAttribute('aria-expanded', 'false'); } });
+  if (toggle && nav) {
+    toggle.addEventListener('click', function () {
+      var open = nav.classList.toggle('open');
+      toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+    nav.addEventListener('click', function (e) { if (e.target.tagName === 'A') { nav.classList.remove('open'); toggle.setAttribute('aria-expanded', 'false'); } });
+  }
 
   // header shadow after scrolling
   var header = doc.getElementById('header');
-  function onScroll() { header.classList.toggle('scrolled', window.scrollY > 10); }
-  window.addEventListener('scroll', onScroll, { passive: true }); onScroll();
+  function onScroll() { if (header) header.classList.toggle('scrolled', window.scrollY > 10); }
+  if (header) { window.addEventListener('scroll', onScroll, { passive: true }); onScroll(); }
 
   // reveal on scroll
   var items = doc.querySelectorAll('.reveal');

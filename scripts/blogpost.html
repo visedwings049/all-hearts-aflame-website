@@ -57,27 +57,6 @@
 
 <a class="skip" href="#top">Skip to content</a>
 
-<header class="site-header" id="header">
-  <div class="container nav-row">
-    <a class="brand" href="/#top" aria-label="All Hearts Aflame home">
-<img src="/assets/logo.webp" alt="All Hearts Aflame">    </a>
-    <button class="nav-toggle" id="navToggle" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button>
-    <nav class="nav" id="nav">
-      <a href="/#top">Home</a>
-      <a href="/#about">About</a>
-      <a href="/#books">Books</a>
-      <a href="/#media">Media</a>
-<a href="/blog/">Blog</a>      <a href="/#speaking">Speaking</a>
-      <a href="/#give">Give</a>
-      <a href="/#contact">Contact</a>
-      <span class="nav-social">
-        <a href="https://www.youtube.com/@JolieVogliardo" target="_blank" rel="noopener" aria-label="Youtube"><svg><use href="#i-youtube"/></svg></a>
-        <a href="https://www.instagram.com/jolie.vogliardo/" target="_blank" rel="noopener" aria-label="Instagram"><svg><use href="#i-instagram"/></svg></a>
-        <a href="https://www.facebook.com/jolie.vogliardo.94" target="_blank" rel="noopener" aria-label="Facebook"><svg><use href="#i-facebook"/></svg></a>
-      </span>
-    </nav>
-  </div>
-</header>
 
 <main id="top">
 <section class="page-section blog-page">
@@ -271,16 +250,18 @@
 
   // mobile nav
   var toggle = doc.getElementById('navToggle'), nav = doc.getElementById('nav');
-  toggle.addEventListener('click', function () {
-    var open = nav.classList.toggle('open');
-    toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
-  });
-  nav.addEventListener('click', function (e) { if (e.target.tagName === 'A') { nav.classList.remove('open'); toggle.setAttribute('aria-expanded', 'false'); } });
+  if (toggle && nav) {
+    toggle.addEventListener('click', function () {
+      var open = nav.classList.toggle('open');
+      toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+    nav.addEventListener('click', function (e) { if (e.target.tagName === 'A') { nav.classList.remove('open'); toggle.setAttribute('aria-expanded', 'false'); } });
+  }
 
   // header shadow after scrolling
   var header = doc.getElementById('header');
-  function onScroll() { header.classList.toggle('scrolled', window.scrollY > 10); }
-  window.addEventListener('scroll', onScroll, { passive: true }); onScroll();
+  function onScroll() { if (header) header.classList.toggle('scrolled', window.scrollY > 10); }
+  if (header) { window.addEventListener('scroll', onScroll, { passive: true }); onScroll(); }
 
   // reveal on scroll
   var items = doc.querySelectorAll('.reveal');
