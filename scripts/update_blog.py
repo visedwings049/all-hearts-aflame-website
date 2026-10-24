@@ -1,4 +1,6 @@
-"""Pulls the newest posts from the Wix blog's RSS feed into blog.json (read by the "From the Blog" section).
+"""Pulls the newest posts from the Wix blog's RSS feed into blog.json (read by the "From the Blog" section)
+and writes a wrapper page for each post at /blog/<slug>/ (our header and footer, the Wix post framed inside,
+and the post's own title, summary and picture for Facebook/X share previews).
 
 Run by .github/workflows/update-blog.yml every few hours; safe to run by hand:  python scripts/update_blog.py
 Standard library only. Keeps the existing blog.json if the feed can't be reached.
@@ -16,7 +18,11 @@ from pathlib import Path
 
 FEED = os.environ.get("BLOG_FEED", "https://jolie738.wixsite.com/allheartsaflame/blog-feed.xml")
 BLOG = os.environ.get("BLOG_URL", "https://jolie738.wixsite.com/allheartsaflame")
-OUT = Path(__file__).resolve().parent.parent / "blog.json"
+SITE_DIR = Path(__file__).resolve().parent.parent
+OUT = SITE_DIR / "blog.json"
+TEMPLATE = SITE_DIR / "scripts" / "blogpost.html"
+SITE_URL = os.environ.get("SITE_URL", "https://allheartsaflame.com")
+DEFAULT_IMAGE = SITE_URL + "/assets/images/book-america-cover.webp"
 LIMIT = 6
 UA = {"User-Agent": "Mozilla/5.0 (compatible; allheartsaflame-blog-sync/1.0)"}
 
@@ -38,6 +44,33 @@ def og_image(page_url: str) -> str:
     m = (re.search(r'<meta[^>]+property=["\']og:image["\'][^>]+content=["\']([^"\']+)', page, re.I)
          or re.search(r'<meta[^>]+content=["\']([^"\']+)["\'][^>]+property=["\']og:image["\']', page, re.I))
     return html.unescape(m.group(1)) if m else ""
+
+
+def slug_of(url: str) -> str:
+    return re.sub(r"[^a-z0-9-]+", "-", url.rstrip("/").rsplit("/", 1)[-1].lower()).strip("-") or "post"
+
+
+def write_pages(posts: list) -> None:
+    if not TEMPLATE.exists():
+        print("no scripts/blogpost.html template; skipping post pages")
+        return
+    tpl = TEMPLATE.read_text(encoding="utf-8")
+    for p in posts:
+        page = p["page"]
+        values = {
+            "__TITLE__": html.escape(p["title"], quote=True),
+            "__DESC__": html.escape(p["excerpt"] or p["title"], quote=True),
+            "__URL__": SITE_URL + page,
+            "__IMAGE__": html.escape(p["image"] or DEFAULT_IMAGE, quote=True),
+            "__WIX__": html.escape(p["url"], quote=True),
+        }
+        out = tpl
+        for k, v in values.items():
+            out = out.replace(k, v)
+        dest = SITE_DIR / page.strip("/") / "index.html"
+        dest.parent.mkdir(parents=True, exist_ok=True)
+        if not dest.exists() or dest.read_text(encoding="utf-8") != out:
+            dest.write_text(out, encoding="utf-8")
 
 
 def main() -> int:
@@ -67,6 +100,7 @@ def main() -> int:
         posts.append({
             "title": clean(item.findtext("title")),
             "url": url,
+            "page": f"/blog/{slug_of(url)}/",
             "date": date,
             "excerpt": excerpt,
             "image": (old.get(url) or {}).get("image") or og_image(url),
@@ -74,6 +108,7 @@ def main() -> int:
     posts.sort(key=lambda p: p["date"], reverse=True)
     posts = posts[:LIMIT]
     prev = json.loads(OUT.read_text(encoding="utf-8")).get("posts") if OUT.exists() else None
+    write_pages(posts)
     if prev == posts:
         print(f"{len(posts)} posts, no change")
         return 0

@@ -61,7 +61,7 @@
       <a href="#about">About</a>
       <a href="#books">Books</a>
       <a href="#media">Media</a>
-<a href="https://jolie738.wixsite.com/allheartsaflame" target="_blank" rel="noopener">Blog</a>      <a href="#speaking">Speaking</a>
+<a href="blog/">Blog</a>      <a href="#speaking">Speaking</a>
       <a href="#give">Give</a>
       <a href="#contact">Contact</a>
       <span class="nav-social">
@@ -237,7 +237,7 @@
       <p class="lead">Fresh teaching, testimonies and encouragement from Jolie.</p>
     </div>
     <div class="blog-grid" id="blogGrid"></div>
-    <p class="blog-more"><a class="btn btn-gold" href="https://jolie738.wixsite.com/allheartsaflame" target="_blank" rel="noopener">Visit the Blog</a></p>
+    <p class="blog-more"><a class="btn btn-gold" href="blog/">Visit the Blog</a></p>
   </div>
 </section>
 <script>
@@ -251,22 +251,23 @@
     return m[Number(p[1]) - 1] + ' ' + Number(p[2]) + ', ' + p[0];
   }
   function card(p) {
-    var u = encodeURIComponent(p.url), t = encodeURIComponent(p.title);
+    var link = p.page || p.url, abs = p.page ? location.origin + p.page : p.url;
+    var u = encodeURIComponent(abs), t = encodeURIComponent(p.title);
     var pic = p.image
       ? '<img src="' + esc(p.image) + '" alt="" loading="lazy">'
       : '<span class="blog-ph"><svg><use href="#flame-gold"/></svg></span>';
     return '<article class="blog-card reveal in">'
-      + '<a class="blog-pic" href="' + esc(p.url) + '" target="_blank" rel="noopener" tabindex="-1" aria-hidden="true">' + pic + '</a>'
+      + '<a class="blog-pic" href="' + esc(link) + '" tabindex="-1" aria-hidden="true">' + pic + '</a>'
       + '<div class="blog-body">'
       + (p.date ? '<p class="blog-date">' + nice(p.date) + '</p>' : '')
-      + '<h3><a href="' + esc(p.url) + '" target="_blank" rel="noopener">' + esc(p.title) + '</a></h3>'
+      + '<h3><a href="' + esc(link) + '">' + esc(p.title) + '</a></h3>'
       + '<p class="blog-ex">' + esc(p.excerpt) + '</p>'
-      + '<a class="blog-read" href="' + esc(p.url) + '" target="_blank" rel="noopener">Read more</a>'
+      + '<a class="blog-read" href="' + esc(link) + '">Read more</a>'
       + '<div class="share" aria-label="Share this post"><span>Share</span>'
       + '<a href="https://www.facebook.com/sharer/sharer.php?u=' + u + '" target="_blank" rel="noopener">Facebook</a>'
       + '<a href="https://twitter.com/intent/tweet?url=' + u + '&text=' + t + '" target="_blank" rel="noopener">X</a>'
       + '<a href="mailto:?subject=' + t + '&body=' + u + '">Email</a>'
-      + '<button type="button" data-copy="' + esc(p.url) + '">Copy link</button></div>'
+      + '<button type="button" data-copy="' + esc(abs) + '">Copy link</button></div>'
       + '</div></article>';
   }
   grid.addEventListener('click', function (e) {
