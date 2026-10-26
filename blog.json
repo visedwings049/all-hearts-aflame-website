@@ -1,4 +1,13 @@
 {
-  "updated": "2026-10-26T17:20:31+00:00",
-  "posts": []
+  "updated": "2026-10-26T17:21:24+00:00",
+  "posts": [
+    {
+      "title": "ZZ wait test (temporary)",
+      "url": "/blog/zz-wait-test/",
+      "page": "/blog/zz-wait-test/",
+      "date": "2026-10-26",
+      "excerpt": "temporary",
+      "image": ""
+    }
+  ]
 }
