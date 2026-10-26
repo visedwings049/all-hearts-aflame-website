@@ -1,0 +1,49 @@
+name: Build editor
+
+# Rebuilds the /admin/ editor when the Tina setup (tina/config.ts) changes. Needs the TINA_TOKEN secret in the repo settings.
+on:
+  push:
+    paths:
+      - "tina/**"
+      - "package.json"
+      - "package-lock.json"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+
+concurrency:
+  group: build-admin
+  cancel-in-progress: false
+
+jobs:
+  admin:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+      - run: npm ci
+      - name: Build the editor
+        env:
+          TINA_TOKEN: ${{ secrets.TINA_TOKEN }}
+        run: npx tinacms build
+      - name: Commit and republish if anything changed
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if [ -z "$(git status --porcelain -- admin tina/tina-lock.json)" ]; then
+            echo "Editor unchanged."
+            exit 0
+          fi
+          git config user.name "admin-build"
+          git config user.email "admin-build@users.noreply.github.com"
+          git add -f admin
+          [ -f tina/tina-lock.json ] && git add -f tina/tina-lock.json || true
+          git commit -m "Build editor"
+          git pull --rebase origin main
+          git push
+          gh api -X POST "repos/${{ github.repository }}/pages/builds" || true

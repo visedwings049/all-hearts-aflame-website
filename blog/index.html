@@ -7,7 +7,7 @@
 <meta name="description" content="Jolie Vogliardo is a prophetic author, speaker and minister. Her newest book, America: The Sleeping Giant and Her Slumbering Church, was voted 2026 Non-Fiction Book of the Year in the AWSA Golden Scroll Awards.">
 <meta property="og:title" content="Jolie Vogliardo | All Hearts Aflame">
 <meta property="og:description" content="Jolie Vogliardo is a prophetic author, speaker and minister. Her newest book, America: The Sleeping Giant and Her Slumbering Church, was voted 2026 Non-Fiction Book of the Year in the AWSA Golden Scroll Awards.">
-<meta name="description" content="Fresh teaching, testimonies and encouragement from Jolie Vogliardo."><link rel="preconnect" href="https://fonts.googleapis.com">
+<meta name="description" content="Teaching, testimonies and encouragement from Jolie Vogliardo."><link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Source+Sans+3:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/style.css">
@@ -74,14 +74,25 @@
 </header>
 
 <main id="top">
-<section class="page-section blog-page blog-only">
+<section class="page-section blog-page">
   <div class="container">
-    <div class="blog-frame-wrap reveal">
-      <iframe class="blog-frame" src="https://jolie738.wixsite.com/allheartsaflame/blog" title="All Hearts Aflame blog" loading="lazy"></iframe>
-    </div>
-    <p class="blog-fallback">Trouble viewing it here? <a href="https://jolie738.wixsite.com/allheartsaflame/blog" target="_blank" rel="noopener">Open the blog in a new tab</a>.</p>
+    <header class="page-head">
+      <svg class="page-flame"><use href="#flame-gold"/></svg>
+      <h1>The <span class="gold-text">Blog</span></h1>
+      <div class="gold-rule center"></div>
+    </header>
+    <!-- generated-by-build_blog -->
+    <div class="blog-grid blog-all"><p class="blog-empty">New posts are coming soon.</p></div>
   </div>
 </section>
+<script>
+document.addEventListener('click', function (e) {
+  var b = e.target.closest('button[data-copy]'); if (!b) return;
+  var url = b.getAttribute('data-copy'), ok = function () { var o = b.textContent; b.textContent = 'Copied!'; setTimeout(function () { b.textContent = o; }, 1800); };
+  if (navigator.clipboard && navigator.clipboard.writeText) { navigator.clipboard.writeText(url).then(ok, function () { window.prompt('Copy this link:', url); }); }
+  else { window.prompt('Copy this link:', url); }
+});
+</script>
 </main>
 
 <footer class="site-footer">

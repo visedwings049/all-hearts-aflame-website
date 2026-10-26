@@ -1,0 +1,16 @@
+{
+  "name": "all-hearts-aflame-website",
+  "private": true,
+  "scripts": {
+    "dev": "tinacms dev",
+    "build:admin": "tinacms build"
+  },
+  "devDependencies": {
+    "@tinacms/cli": "^2.0.0",
+    "tinacms": "^3.0.0"
+  },
+  "dependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  }
+}
