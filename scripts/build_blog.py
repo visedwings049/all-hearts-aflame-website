@@ -37,6 +37,15 @@ def figures(html_text: str) -> str:
     return FIGURE_RE.sub(one, html_text)
 
 
+FONT_LINK_RE = re.compile(r'<a href="font:(cormorant|cinzel|playfair|lora|georgia|script)">(.*?)</a>', re.S)
+FONT_NAMES = {"cormorant", "cinzel", "playfair", "lora", "georgia", "script"}
+
+
+def fonts(html_text: str) -> str:
+    """[some words](font:cinzel) -> the words in that font."""
+    return FONT_LINK_RE.sub(lambda m: f'<span class="font-{m.group(1)}">{m.group(2)}</span>', html_text)
+
+
 MARKER = "<!-- generated-by-build_blog -->"
 HOME_CARDS = 6
 
@@ -78,6 +87,7 @@ def read_post(path: Path):
         "excerpt": excerpt,
         "image": site_path(meta.get("image")),
         "draft": bool(meta.get("draft")),
+        "font": str(meta.get("font") or "").strip().lower() if str(meta.get("font") or "").strip().lower() in FONT_NAMES else "",
         "body": body,
     }
 
@@ -128,13 +138,14 @@ def main() -> int:
     for p in posts:
         p["page"] = f"/blog/{p['slug']}/"
         md.reset()
-        content = figures(md.convert(p["body"]))
+        content = fonts(figures(md.convert(p["body"])))
         cover = (f'<figure class="post-cover"><img src="{esc(p["image"])}" alt=""></figure>' if p["image"] else "")
         og_image = p["image"] if p["image"].startswith("http") else (SITE_URL + p["image"] if p["image"] else DEFAULT_IMAGE)
         out = post_tpl
         for k, v in {
             "__TITLE__": esc(p["title"]), "__DESC__": esc(p["excerpt"] or p["title"]), "__URL__": SITE_URL + p["page"],
             "__IMAGE__": esc(og_image), "__DATE__": esc(nice_date(p["date"])), "__COVER__": cover,
+            "__BODYCLASS__": ("font-" + p["font"]) if p["font"] else "",
         }.items():
             out = out.replace(k, v)
         out = out.replace("__CONTENT__", content)  # last, so post text can never be mistaken for a placeholder

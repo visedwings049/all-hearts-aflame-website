@@ -25,6 +25,18 @@ export default defineConfig({
           { type: "datetime", name: "date", label: "Date", required: true },
           { type: "string", name: "excerpt", label: "Short summary (shown on the home page and in Facebook previews)", ui: { component: "textarea" } },
           { type: "image", name: "image", label: "Cover picture" },
+          {
+            type: "string", name: "font", label: "Post font (whole post)",
+            options: [
+              { label: "Site font (Source Sans 3)", value: "default" },
+              { label: "Cormorant Garamond (elegant serif)", value: "cormorant" },
+              { label: "Cinzel (classic capitals)", value: "cinzel" },
+              { label: "Playfair Display (bold serif)", value: "playfair" },
+              { label: "Lora (book serif)", value: "lora" },
+              { label: "Georgia (traditional serif)", value: "georgia" },
+              { label: "Dancing Script (handwriting)", value: "script" },
+            ],
+          },
           { type: "boolean", name: "draft", label: "Draft (keep hidden for now)" },
           { type: "rich-text", name: "body", label: "Post", isBody: true },
         ],
