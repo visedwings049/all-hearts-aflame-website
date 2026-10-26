@@ -1,4 +1,13 @@
 {
-  "updated": "",
-  "posts": []
+  "updated": "2026-10-26T15:06:25+00:00",
+  "posts": [
+    {
+      "title": "Pipeline Test Post (will be deleted)",
+      "url": "/blog/pipeline-test/",
+      "page": "/blog/pipeline-test/",
+      "date": "2026-10-26",
+      "excerpt": "A temporary post used to confirm that saving a post builds its page automatically.",
+      "image": ""
+    }
+  ]
 }
