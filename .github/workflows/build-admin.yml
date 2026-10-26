@@ -35,14 +35,14 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          if [ -z "$(git status --porcelain -- admin tina/tina-lock.json)" ]; then
+          git add -f admin
+          [ -f tina/tina-lock.json ] && git add -f tina/tina-lock.json || true
+          if git diff --cached --quiet; then
             echo "Editor unchanged."
             exit 0
           fi
           git config user.name "admin-build"
           git config user.email "admin-build@users.noreply.github.com"
-          git add -f admin
-          [ -f tina/tina-lock.json ] && git add -f tina/tina-lock.json || true
           git commit -m "Build editor"
           git pull --rebase origin main
           git push
