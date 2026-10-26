@@ -1,4 +1,13 @@
 {
-  "updated": "2026-10-26T15:07:47+00:00",
-  "posts": []
+  "updated": "2026-10-26T17:16:36+00:00",
+  "posts": [
+    {
+      "title": "Test page",
+      "url": "/blog/test-page/",
+      "page": "/blog/test-page/",
+      "date": "2026-10-26",
+      "excerpt": "test",
+      "image": "/assets/images/blog/test-page-cover-1793034977.webp"
+    }
+  ]
 }
