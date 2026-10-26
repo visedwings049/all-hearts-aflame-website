@@ -25,6 +25,18 @@ POST_TPL = SITE_DIR / "scripts" / "blogpost.html"
 INDEX_TPL = SITE_DIR / "scripts" / "blogindex.html"
 SITE_URL = os.environ.get("SITE_URL", "https://allheartsaflame.com")
 DEFAULT_IMAGE = SITE_URL + "/assets/images/book-america-cover.webp"
+FIGURE_RE = re.compile(r'<img alt="([^"]*)" src="([^"]*)" title="layout:(full|wide|left|right)" />')
+
+
+def figures(html_text: str) -> str:
+    """![caption](picture "layout:left") -> a captioned figure that is full width, centered, or floated left/right."""
+    def one(m):
+        cap, src, layout = m.group(1), m.group(2), m.group(3)
+        return (f'<figure class="post-img {layout}"><img src="{src}" alt="{cap}" loading="lazy">'
+                + (f"<figcaption>{cap}</figcaption>" if cap else "") + "</figure>")
+    return FIGURE_RE.sub(one, html_text)
+
+
 MARKER = "<!-- generated-by-build_blog -->"
 HOME_CARDS = 6
 
@@ -116,7 +128,7 @@ def main() -> int:
     for p in posts:
         p["page"] = f"/blog/{p['slug']}/"
         md.reset()
-        content = md.convert(p["body"])
+        content = figures(md.convert(p["body"]))
         cover = (f'<figure class="post-cover"><img src="{esc(p["image"])}" alt=""></figure>' if p["image"] else "")
         og_image = p["image"] if p["image"].startswith("http") else (SITE_URL + p["image"] if p["image"] else DEFAULT_IMAGE)
         out = post_tpl
