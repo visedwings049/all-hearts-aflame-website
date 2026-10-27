@@ -13,7 +13,7 @@
 <meta property="og:image" content="https://allheartsaflame.com/assets/images/blog/test-cover-1793061460.webp">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="canonical" href="https://allheartsaflame.com/blog/test/">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel&family=Cormorant+Garamond&family=Dancing+Script&family=Lora&family=Playfair+Display&display=swap">
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Source+Sans+3:wght@400;500;600&display=swap" rel="stylesheet">
@@ -90,28 +90,17 @@
       <h1>Test</h1>
     </header>
     <figure class="post-cover"><img src="/assets/images/blog/test-cover-1793061460.webp" alt=""></figure>
-    <div class="post-body "><p>This is a test Blog</p></div>
-    <div class="share share-page" aria-label="Share this post"><span>Share this post</span>
-      <a id="shFb" href="#" target="_blank" rel="noopener">Facebook</a>
-      <a id="shX" href="#" target="_blank" rel="noopener">X</a>
-      <a id="shMail" href="#">Email</a>
-      <button type="button" id="shCopy">Copy link</button>
-    </div>
+    <div class="post-body "><section class="post-block"><p>This is a test Blog</p></section></div>
+    <div class="share share-page" aria-label="Share this post"><span>Share this post</span><a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fallheartsaflame.com%2Fblog%2Ftest%2F" target="_blank" rel="noopener">Facebook</a><a href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fallheartsaflame.com%2Fblog%2Ftest%2F&amp;text=Test" target="_blank" rel="noopener">X (Twitter)</a><a href="mailto:?subject=Test&amp;body=https%3A%2F%2Fallheartsaflame.com%2Fblog%2Ftest%2F" target="_blank" rel="noopener">Email</a><button type="button" data-copy="https://allheartsaflame.com/blog/test/">Copy link</button></div>
   </article>
 </section>
 <script>
-(function () {
-  var u = encodeURIComponent(location.href.split('#')[0]), t = encodeURIComponent(document.title.split(' | ')[0]);
-  document.getElementById('shFb').href = 'https://www.facebook.com/sharer/sharer.php?u=' + u;
-  document.getElementById('shX').href = 'https://twitter.com/intent/tweet?url=' + u + '&text=' + t;
-  document.getElementById('shMail').href = 'mailto:?subject=' + t + '&body=' + u;
-  var b = document.getElementById('shCopy');
-  b.addEventListener('click', function () {
-    var url = location.href.split('#')[0], ok = function () { var o = b.textContent; b.textContent = 'Copied!'; setTimeout(function () { b.textContent = o; }, 1800); };
-    if (navigator.clipboard && navigator.clipboard.writeText) { navigator.clipboard.writeText(url).then(ok, function () { window.prompt('Copy this link:', url); }); }
-    else { window.prompt('Copy this link:', url); }
-  });
-})();
+document.addEventListener('click', function (e) {
+  var b = e.target.closest('button[data-copy]'); if (!b) return;
+  var url = b.getAttribute('data-copy'), ok = function () { var o = b.textContent; b.textContent = 'Copied!'; setTimeout(function () { b.textContent = o; }, 1800); };
+  if (navigator.clipboard && navigator.clipboard.writeText) { navigator.clipboard.writeText(url).then(ok, function () { window.prompt('Copy this link:', url); }); }
+  else { window.prompt('Copy this link:', url); }
+});
 </script>
 </main>
 
