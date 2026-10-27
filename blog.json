@@ -1,19 +1,6 @@
 {
-  "updated": "2026-10-27T01:17:52+00:00",
+  "updated": "2026-10-27T01:19:47+00:00",
   "posts": [
-    {
-      "title": "ZZ Live Blocks Test (temporary)",
-      "url": "/blog/zz-blocks-live-test/",
-      "page": "/blog/zz-blocks-live-test/",
-      "date": "2026-10-26",
-      "excerpt": "temporary test",
-      "image": "/assets/images/blog/zz-blocks-live-test-block1.webp",
-      "share": [
-        "telegram",
-        "reddit",
-        "copy"
-      ]
-    },
     {
       "title": "Test",
       "url": "/blog/test/",
