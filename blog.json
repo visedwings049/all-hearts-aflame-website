@@ -1,5 +1,5 @@
 {
-  "updated": "2026-10-27T01:19:47+00:00",
+  "updated": "2026-10-27T01:35:04+00:00",
   "posts": [
     {
       "title": "Test",
@@ -8,6 +8,20 @@
       "date": "2026-10-26",
       "excerpt": "This is a test Blog",
       "image": "/assets/images/blog/test-cover-1793061460.webp",
+      "share": [
+        "facebook",
+        "x",
+        "email",
+        "copy"
+      ]
+    },
+    {
+      "title": "Be Brave and Obey God",
+      "url": "/blog/be-brave-and-obey-god/",
+      "page": "/blog/be-brave-and-obey-god/",
+      "date": "2026-10-26",
+      "excerpt": "If you’re being honest, have you ever struggled to obey God, because it would be easier to not\ndo so – to keep the peace with people around you, or avoid friction? I can admit I have.\n\nIn the book of 2 Kings, there’s a story about this very issue.\n“Then King Ahaz went to Damascus to meet Tiglath-Pileser king of Assyria. He saw an altar in\nDamascus and sent to Uriah the priest a sketch of the altar, with detailed plans for its\nconstruction” (2 Kings. 16:10).",
+      "image": "/assets/images/blog/be-brave-and-obey-god-block1-1793064703.webp",
       "share": [
         "facebook",
         "x",
