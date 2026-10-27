@@ -403,6 +403,12 @@ body.signup-open { overflow: hidden; }
 .font-georgia { font-family: Georgia, "Times New Roman", serif; }
 .font-script { font-family: "Dancing Script", cursive; font-size: 1.2em; }
 .post-body.font-cormorant, .post-body.font-script { font-size: 1.28rem; }
+.post-block { margin: 0 0 1.8em; }
+.post-block::after { content: ""; display: block; clear: both; }
+.post-fig { margin: 1.4em auto; }
+.post-fig img { display: block; width: 100%; height: auto; border: 4px solid #fff; outline: 1px solid var(--line); box-shadow: 0 12px 26px rgba(0, 0, 0, .2); }
+.post-fig figcaption { margin-top: 8px; text-align: center; font-style: italic; color: var(--muted); font-size: .95rem; }
+@media (max-width: 640px) { .post-fig { width: 100% !important; } }
 .post-body::after { content: ""; display: block; clear: both; }
 .post-img { margin: 1.6em auto; }
 .post-img img { display: block; width: 100%; height: auto; border: 4px solid #fff; outline: 1px solid var(--line); box-shadow: 0 12px 26px rgba(0, 0, 0, .2); }
