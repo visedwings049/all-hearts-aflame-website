@@ -24,7 +24,8 @@ export default defineConfig({
           { type: "string", name: "title", label: "Title", isTitle: true, required: true },
           { type: "datetime", name: "date", label: "Date", required: true },
           { type: "string", name: "excerpt", label: "Short summary (shown on the home page and in Facebook previews)", ui: { component: "textarea" } },
-          { type: "image", name: "image", label: "Cover picture" },
+          { type: "image", name: "summaryImage", label: "Summary picture (blog list, home page card and Facebook/X previews)" },
+          { type: "image", name: "image", label: "Cover picture (top of the post; used for the summary if there is no summary picture)" },
           {
             type: "string", name: "font", label: "Post font (whole post)",
             options: [

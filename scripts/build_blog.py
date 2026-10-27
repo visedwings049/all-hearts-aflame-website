@@ -223,9 +223,15 @@ def read_post(path: Path) -> dict:
     return {
         "slug": path.stem,
         "title": str(meta.get("title") or path.stem.replace("-", " ").title()).strip(),
-        "date": date, "excerpt": excerpt, "image": site_path(meta.get("image")), "draft": bool(meta.get("draft")),
+        "date": date, "excerpt": excerpt, "image": site_path(meta.get("image")), "summary_image": site_path(meta.get("summaryImage")),
+        "draft": bool(meta.get("draft")),
         "font": font if font in FONT_BY_KEY and font != "default" else "", "share": share, "blocks": blocks,
     }
+
+
+def card_image(p) -> str:
+    """The picture for the blog list, the home page card and share previews: the summary picture, else the cover, else the first block picture."""
+    return p["summary_image"] or p["image"] or next((b["image"] for b in p["blocks"] if b["image"]), "")
 
 
 def share_html(p, url: str, og_image: str, cls_label: bool = True) -> str:
@@ -242,9 +248,10 @@ def share_html(p, url: str, og_image: str, cls_label: bool = True) -> str:
 
 def card(p) -> str:
     url = SITE_URL + p["page"]
-    pic = (f'<img src="{esc(p["image"])}" alt="" loading="lazy">' if p["image"]
+    cimg = card_image(p)
+    pic = (f'<img src="{esc(cimg)}" alt="" loading="lazy">' if cimg
            else '<span class="blog-ph"><svg><use href="#flame-gold"/></svg></span>')
-    shares = share_html(p, url, p["image"] or DEFAULT_IMAGE, cls_label=False)
+    shares = share_html(p, url, cimg or DEFAULT_IMAGE, cls_label=False)
     return (
         '<article class="blog-card">'
         f'<a class="blog-pic" href="{esc(p["page"])}" tabindex="-1" aria-hidden="true">{pic}</a>'
@@ -274,8 +281,7 @@ def main() -> int:
         p["page"] = f"/blog/{p['slug']}/"
         content = post_content_html(p)
         cover = (f'<figure class="post-cover"><img src="{esc(p["image"])}" alt=""></figure>' if p["image"] else "")
-        first_img = next((b["image"] for b in p["blocks"] if b["image"]), "")
-        og_source = p["image"] or first_img
+        og_source = card_image(p)
         og_image = og_source if og_source.startswith("http") else (SITE_URL + og_source if og_source else DEFAULT_IMAGE)
         used = [p["font"]] + re.findall(r'class="font-([a-z]+)"', content)
         shares = share_html(p, SITE_URL + p["page"], og_image)
@@ -308,7 +314,7 @@ def main() -> int:
         idx.write_text(index_html, encoding="utf-8")
 
     feed = [{"title": p["title"], "url": p["page"], "page": p["page"], "date": p["date"], "excerpt": p["excerpt"],
-             "image": p["image"] or next((b["image"] for b in p["blocks"] if b["image"]), ""), "share": p["share"]} for p in posts[:HOME_CARDS]]
+             "image": card_image(p), "share": p["share"]} for p in posts[:HOME_CARDS]]
     out_json = SITE_DIR / "blog.json"
     old = json.loads(out_json.read_text(encoding="utf-8")).get("posts") if out_json.exists() else None
     if old != feed:
