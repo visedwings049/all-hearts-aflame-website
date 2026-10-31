@@ -298,6 +298,8 @@ audio { width: 100%; accent-color: var(--gold); margin-top: auto; }
 .page-box { position: relative; max-width: 980px; margin: 0 auto; padding: 52px 52px 56px; text-align: center; border: 3px solid transparent;
   background-image: linear-gradient(#fff, #fff), var(--gold-grad); background-origin: border-box; background-clip: padding-box, border-box;
   box-shadow: 0 30px 70px rgba(184, 137, 43, .22); }
+.page-box .page-head { margin-bottom: 40px; max-width: 800px; }
+.page-box .page-head h1, .page-box .page-head h2 { font-size: clamp(1.8rem, 3.6vw, 2.7rem); }
 .page-box .lead { max-width: 640px; margin-left: auto; margin-right: auto; }
 .page-box .btn { margin-top: 12px; }
 .book-title { font-family: var(--serif); font-style: italic; font-weight: 700; font-size: clamp(1.5rem, 3vw, 2.2rem); margin: 10px 0 0; }
