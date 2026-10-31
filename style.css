@@ -3,7 +3,7 @@
   --bg: #ffffff;
   --ink: #0a0a0a;
   --muted: #444444;
-  --gold: {{ accent_color }};
+  --gold: #b8892b;
   --gold-deep: #8a6a10;
   --gold-light: #e8cd78;
   --gold-grad: linear-gradient(135deg, #7a5a0a 0%, #c9a227 30%, #ecc95a 50%, #b8892b 74%, #7a5a0a 100%);
