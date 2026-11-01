@@ -2,7 +2,7 @@
 title: Be Brave and Obey God
 date: '2026-11-01T12:00:00.000Z'
 excerpt: ''
-summaryImage: assets/images/blog/be-brave-and-obey-god-summary-1793570353.webp
+image: assets/images/blog/be-brave-and-obey-god-cover-1793570623.webp
 share:
 - facebook
 - x
