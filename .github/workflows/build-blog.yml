@@ -8,6 +8,9 @@ on:
       - "scripts/build_blog.py"
       - "scripts/blogpost.html"
       - "scripts/blogindex.html"
+  # Scheduled posts: every 15 minutes the blog is rebuilt, and a post whose "publish later" time has passed goes live.
+  schedule:
+    - cron: "*/15 * * * *"
   workflow_dispatch:
 
 permissions:

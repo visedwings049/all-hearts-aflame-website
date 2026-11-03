@@ -95,6 +95,7 @@ export default defineConfig({
               { type: "string", name: "caption", label: "Caption" },
             ],
           },
+          { type: "datetime", name: "publishAt", label: "Publish later: go live at this date and time (leave empty to publish right away)", ui: { timeFormat: "HH:mm" } },
           { type: "boolean", name: "draft", label: "Draft (keep hidden for now)" },
           { type: "rich-text", name: "body", label: "Older single-body text (posts written before blocks)", isBody: true },
         ],

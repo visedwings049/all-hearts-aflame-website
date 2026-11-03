@@ -203,6 +203,23 @@ def nice_date(iso: str) -> str:
         return ""
 
 
+def read_publish_at(value):
+    """When a scheduled post should go live, as a UTC datetime (None when the post has no schedule)."""
+    if isinstance(value, datetime.datetime):
+        d = value
+    elif isinstance(value, datetime.date):
+        d = datetime.datetime(value.year, value.month, value.day)
+    else:
+        text = str(value or "").strip()
+        if not text:
+            return None
+        try:
+            d = datetime.datetime.fromisoformat(text.replace("Z", "+00:00"))
+        except ValueError:
+            return None
+    return d.replace(tzinfo=datetime.timezone.utc) if d.tzinfo is None else d.astimezone(datetime.timezone.utc)
+
+
 def read_post(path: Path) -> dict:
     raw = path.read_text(encoding="utf-8")
     m = re.match(r"^---\s*\n(.*?)\n---\s*\n?(.*)$", raw, re.S)
@@ -224,7 +241,7 @@ def read_post(path: Path) -> dict:
         "slug": path.stem,
         "title": str(meta.get("title") or path.stem.replace("-", " ").title()).strip(),
         "date": date, "excerpt": excerpt, "image": site_path(meta.get("image")), "summary_image": site_path(meta.get("summaryImage")),
-        "draft": bool(meta.get("draft")),
+        "draft": bool(meta.get("draft")), "publish_at": read_publish_at(meta.get("publishAt")),
         "font": font if font in FONT_BY_KEY and font != "default" else "", "share": share, "blocks": blocks,
     }
 
@@ -270,7 +287,11 @@ def main() -> int:
         print("blog templates missing (scripts/blogpost.html, scripts/blogindex.html)")
         return 1
     posts = [read_post(p) for p in sorted(POSTS_DIR.glob("*.md"))] if POSTS_DIR.exists() else []
-    posts = [p for p in posts if not p["draft"]]
+    now = datetime.datetime.now(datetime.timezone.utc)
+    waiting = [p for p in posts if not p["draft"] and p["publish_at"] and p["publish_at"] > now]
+    posts = [p for p in posts if not p["draft"] and not (p["publish_at"] and p["publish_at"] > now)]
+    if waiting:
+        print(f"{len(waiting)} scheduled post(s) waiting: " + ", ".join(p["slug"] for p in waiting))
     posts.sort(key=lambda p: (p["date"], p["slug"]), reverse=True)
     post_tpl = POST_TPL.read_text(encoding="utf-8")
 
