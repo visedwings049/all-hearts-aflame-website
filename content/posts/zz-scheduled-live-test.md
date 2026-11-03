@@ -1,7 +1,7 @@
 ---
 title: ZZ Scheduled Live Test (temporary)
 date: '2026-11-03T12:00:00.000Z'
-excerpt: temporary test
+excerpt: temporary test (touched)
 share:
 - copy
 blocks:
